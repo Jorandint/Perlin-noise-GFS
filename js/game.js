@@ -50,7 +50,7 @@ class NoiseScene extends Phaser.Scene
             for(let x = 0; x < parameters.noisewidth; x++){
                 const v = generator.noise(x, y, parameters.options);
                 const index = Math.floor(v * (tilesCount - 1));
-                this.mainlayer.putTileAt(index+5, x, y);
+                this.mainlayer.putTileAt(index+3, x, y);
             }   
         } 
         generator = null;
@@ -61,7 +61,7 @@ class uiscene extends Phaser.Scene{
     {
         super({ key : 'uiscene', active: true});
         this.options = { scale: 40, octaves: 4, persistence: 0.5, lacunarity: 2 };
-        this.settings = {noisewidth: 500, noiseheight: 400, seed: "djwqoerf72", options: this.options};
+        this.settings = {noisewidth: 100, noiseheight: 90, seed: "djwqoerf72", options: this.options};
         
     }
     preload (){
@@ -69,25 +69,30 @@ class uiscene extends Phaser.Scene{
     create (){
         this.add.text(10, 10, 'Press G to generate new noise', { font: '16px Courier', fill: '#00ff00' });
         this.add.text(10, 26, 'Press UP/DOWN to change scale', { font: '16px Courier', fill: '#00ff00' });
-        this.scaletext = this.add.text(500, 26, `Scale: ${this.settings.options.scale}`, { font: '16px Courier', fill: '#00ff00' });
+        this.add.text(10, 42, 'Press LEFT/RIGHT to change octaves', { font: '16px Courier', fill: '#00ff00' });
+        this.scaletext = this.add.text(500, 26, `Scale: ${this.settings.options.scale}`+  `     Octaves: ${this.settings.options.octaves}`, { font: '16px Courier', fill: '#00ff00' });
         let keyObject = this.input.keyboard.addKey("G", false, false);
         keyObject.on('down', () => {
             this.scene.get('NoiseScene').generate_new_noise();
         });
         this.input.keyboard.on('keydown-UP', () => {
             this.settings.options.scale += 5;
-            console.log(this.settings.options.scale);
         });
         this.input.keyboard.on('keydown-DOWN', () => {
             this.settings.options.scale -= 5;
             if(this.settings.options.scale < 1){
                 this.settings.options.scale = 1;
             }
-            console.log(this.settings.options.scale);
+        });
+        this.input.keyboard.on('keydown-LEFT', () => {
+            this.settings.options.octaves -= 1;
+        });
+        this.input.keyboard.on('keydown-RIGHT', () => {
+            this.settings.options.octaves += 1;
         });
     }
     update (){
-        this.scaletext.setText(`Scale: ${this.settings.options.scale}`, { font: '16px Courier', fill: '#00ff00' });
+        this.scaletext.setText(`Scale: ${this.settings.options.scale}`+ `     Octaves: ${this.settings.options.octaves}`, { font: '16px Courier', fill: '#00ff00' });
         
     }
 }

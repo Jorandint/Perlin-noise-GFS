@@ -58,7 +58,7 @@ class noise_generator {
 	// Fractal noise with simple options; returns [0,1]
 	noise(x,y,opts){
 		opts = opts || {};
-		const octaves = Math.max(1, (opts.octaves|0) || 1);
+		const octaves = Math.max(1, (opts.octaves) || 1);
 		const persistence = opts.persistence !== undefined ? opts.persistence : 0.5;
 		const lacunarity = opts.lacunarity !== undefined ? opts.lacunarity : 2.0;
 		const scale = (opts.scale && opts.scale>0) ? opts.scale : 1.0;
