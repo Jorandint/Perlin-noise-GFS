@@ -90,6 +90,10 @@ export function touchzoom(game){
     //])
 }
 export function setupCamera(game){
+    const camera = game.cameras.main;
+    camera.setZoom(1);
+    game.cameras.main.setBounds();
+    game.input.addPointer(2); 
     mousewheelzoom(game);
     game.mouse = {}
     game.mouse.wasDown = false
