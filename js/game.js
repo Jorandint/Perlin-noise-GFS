@@ -17,7 +17,6 @@ class NoiseScene extends Phaser.Scene
 
     create ()
     {
-        
         this.generate_new_noise();
 
         setupCamera(this);
@@ -35,7 +34,7 @@ class NoiseScene extends Phaser.Scene
         let parameters = this.scene.get('uiscene').settings;
         console.log(parameters);
         const generator = new noise_generator();
-        generator.seed(parameters.seed);
+        generator.seed(Math.floor(Math.random()*100000));
         this.tilemap = this.make.tilemap({tileWidth: 1, tileHeight: 1, width: parameters.noisewidth, height: parameters.noiseheight});
         const tileset = this.tilemap.addTilesetImage("tile");
         
@@ -48,7 +47,7 @@ class NoiseScene extends Phaser.Scene
             for(let x = 0; x < parameters.noisewidth; x++){
                 const v = generator.noise(x, y, parameters.options);
                 const index = Math.floor(v * (tilesCount - 1));
-                this.mainlayer.putTileAt(index, x, y);
+                this.mainlayer.putTileAt(index+5, x, y);
             }   
         }
     }
@@ -64,10 +63,26 @@ class uiscene extends Phaser.Scene{
     preload (){
     }
     create (){
-        
+        this.add.text(10, 10, 'Press G to generate new noise', { font: '16px Courier', fill: '#00ff00' });
+        this.add.text(10, 26, 'Press UP/DOWN to change scale', { font: '16px Courier', fill: '#00ff00' });
+        this.scaletext = this.add.text(500, 26, `Scale: ${this.settings.options.scale}`, { font: '16px Courier', fill: '#00ff00' });
+        this.input.keyboard.on('keydown-G', () => {
+            this.scene.get('NoiseScene').generate_new_noise();
+        });
+        this.input.keyboard.on('keydown-UP', () => {
+            this.settings.options.scale += 5;
+            console.log(this.settings.options.scale);
+        });
+        this.input.keyboard.on('keydown-DOWN', () => {
+            this.settings.options.scale -= 5;
+            if(this.settings.options.scale < 1){
+                this.settings.options.scale = 1;
+            }
+            console.log(this.settings.options.scale);
+        });
     }
     update (){
-
+        this.scaletext.setText(`Scale: ${this.settings.options.scale}`, { font: '16px Courier', fill: '#00ff00' });
     }
 }
 class StartScene extends Phaser.Scene{
