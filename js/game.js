@@ -71,6 +71,9 @@ class uiscene extends Phaser.Scene{
         this.settings = {noisewidth: 300, noiseheight: 200, seed: "000000", options: this.options};
     }
     preload (){
+        this.updateseed = false;
+        this.updatewidth = false;
+        this.updateheight = false;
     }
     create (){
         createtext(this);
