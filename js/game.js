@@ -1,6 +1,12 @@
 import { noise_generator } from './noise.js';
 import { updateCamera } from './camera.js';
 import { setupCamera } from './camera.js';
+import { input } from './ui.js';
+import { createtext } from './ui.js';
+import { updateUi } from './ui.js';
+import { buttons } from './ui.js';
+import { setupinput } from './inputscene.js';
+import { updateinput } from './inputscene.js';
 
 class NoiseScene extends Phaser.Scene
 {
@@ -37,7 +43,7 @@ class NoiseScene extends Phaser.Scene
         let parameters = this.scene.get('uiscene').settings;
         console.log(parameters);
         let generator = new noise_generator();
-        generator.seed(Math.floor(Math.random()*100000));
+        generator.seed(parameters.seed);
         this.tilemap = this.make.tilemap({tileWidth: 1, tileHeight: 1, width: parameters.noisewidth, height: parameters.noiseheight});
         const tileset = this.tilemap.addTilesetImage("tile");
         
@@ -60,56 +66,36 @@ class uiscene extends Phaser.Scene{
     constructor ()
     {
         super({ key : 'uiscene', active: true});
+        this.tempinf = "";
         this.options = { scale: 40, octaves: 4, persistence: 0.5, lacunarity: 2 };
-        this.settings = {noisewidth: 100, noiseheight: 90, seed: "djwqoerf72", options: this.options};
-        
+        this.settings = {noisewidth: 300, noiseheight: 200, seed: "000000", options: this.options};
     }
     preload (){
     }
     create (){
-        this.add.text(10, 10, 'Press G to generate new noise', { font: '16px Courier', fill: '#00ff00' });
-        this.add.text(10, 26, 'Press UP/DOWN to change scale', { font: '16px Courier', fill: '#00ff00' });
-        this.add.text(10, 42, 'Press LEFT/RIGHT to change octaves', { font: '16px Courier', fill: '#00ff00' });
-        this.scaletext = this.add.text(500, 26, `Scale: ${this.settings.options.scale}`+  `     Octaves: ${this.settings.options.octaves}`, { font: '16px Courier', fill: '#00ff00' });
-        let keyObject = this.input.keyboard.addKey("G", false, false);
-        keyObject.on('down', () => {
-            this.scene.get('NoiseScene').generate_new_noise();
-        });
-        this.input.keyboard.on('keydown-UP', () => {
-            this.settings.options.scale += 5;
-        });
-        this.input.keyboard.on('keydown-DOWN', () => {
-            this.settings.options.scale -= 5;
-            if(this.settings.options.scale < 1){
-                this.settings.options.scale = 1;
-            }
-        });
-        this.input.keyboard.on('keydown-LEFT', () => {
-            this.settings.options.octaves -= 1;
-        });
-        this.input.keyboard.on('keydown-RIGHT', () => {
-            this.settings.options.octaves += 1;
-        });
+        createtext(this);
+        input(this);
+        buttons(this);
     }
     update (){
-        this.scaletext.setText(`Scale: ${this.settings.options.scale}`+ `     Octaves: ${this.settings.options.octaves}`, { font: '16px Courier', fill: '#00ff00' });
+        updateUi(this);
         
     }
 }
-class StartScene extends Phaser.Scene{
+class inputscene extends Phaser.Scene{
     constructor ()
     {
-        super({ key : 'StartScene', active: false});
+        super({ key : 'inputscene', active: false});
+        this.currentcont = "";
     }
-    preload (){}
+    preload (){
+
+    }
     create (){
-        //this.scene.start('uiscene');
-        //this.scene.start('NoiseScene');
+        setupinput(this);
     }
     update (){
-        //this.scene.start('uiscene');
-        //this.scene.start('NoiseScene'); 
-        //this.scene.stop('StartScene');
+        updateinput(this);
     }
 
 }
@@ -119,12 +105,12 @@ var config = {
     pixelArt: true,
     scrolling: false,
     backgrundColor: '#c52222ff',
-    scene: [NoiseScene, uiscene, StartScene], 
+    scene: [NoiseScene, uiscene, inputscene], 
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 1200,
-        height: 700,
+        height: 600,
         expandParent: true,
         resizeInterval: 50,
       },
