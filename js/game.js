@@ -13,8 +13,6 @@ class NoiseScene extends Phaser.Scene
     constructor ()
     {
         super({ key : 'NoiseScene', active: true});
-        this.tilemap = null;
-        this.mainlayer = null;
     }
     preload ()
     {
@@ -38,8 +36,6 @@ class NoiseScene extends Phaser.Scene
 
 
     generate_new_noise(){
-        this.tilemap = null;
-        this.mainlayer = null;
         let parameters = this.scene.get('uiscene').settings;
         console.log(parameters);
         let generator = new noise_generator();
@@ -88,10 +84,9 @@ class inputscene extends Phaser.Scene{
     constructor ()
     {
         super({ key : 'inputscene', active: false});
-        this.currentcont = "";
     }
     preload (){
-
+        this.currentcont = "";
     }
     create (){
         setupinput(this);

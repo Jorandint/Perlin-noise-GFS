@@ -1,6 +1,6 @@
 import { TextButton } from "./widgets.js";
 export function setupinput(scene){
-    scene.text1 = scene.add.text(500, 126, `${scene.currentcont}`, { font: '16px Courier', fill: '#00ff00' });
+    //scene.text1 = scene.add.text(500, 126, `${scene.currentcont}`, { font: '16px Courier', fill: '#00ff00' });
     let onebutton = new TextButton(scene, 200, 100, "1", { font: '16px Courier', fill: '#00ff00' }, (scene) => {
         scene.currentcont = scene.currentcont + "1";
         console.log(scene.currentcont);

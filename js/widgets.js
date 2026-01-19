@@ -2,7 +2,7 @@ export class TextButton{
     constructor(scene, x, y, text, style, callback){
         this.text = scene.add.text(x, y, text, style)
         //add a rect
-        this.rect = scene.add.rectangle(x, y, this.text.width + 10, this.text.height + 10, 0x222222)
+        this.rect = scene.add.rectangle(x, y, this.text.width + 10, this.text.height + 10, 0x6666CC)
         this.rect.setInteractive()
         this.rect.setOrigin(0.5, 0.5)
         //delete and readd the text
@@ -20,8 +20,8 @@ export class TextButton{
         this.rect.fillColor = 0xCCCCCC
     }
     deactivate(){
-        this.text.setColor("#BBBBBB")
-        this.rect.fillColor = 0x222222
+        this.text.setColor("#00ff00")
+        this.rect.fillColor = 0x6666CC
     }
     hover(){
         this.text.setColor("#333333")
