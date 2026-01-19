@@ -43,8 +43,8 @@ export function updateinput(scene){
     scene.text1.setText(`${scene.currentcont}`, { font: '16px Courier', fill: '#00ff00' });
 }
 function done(scene){
-    scene.scene.get('uiscene').settings.seed = scene.currentcont;
-
+    scene.scene.get('uiscene').tempinf = scene.currentcont;
+    
     scene.scene.stop('inputscene');
 }
 
